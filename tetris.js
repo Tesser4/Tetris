@@ -99,6 +99,14 @@ brickProto.moveLeft = function() {
   this.draw()
 }
 
+brickProto.rotate = function() {
+  this.undraw()
+  this.activePattern += 1
+  this.activePattern %= this.tetromino.length
+  this.activeTetromino = this.tetromino[this.activePattern]
+  this.draw()
+}
+
 
 
 let theBrick = popBrick(BRICKS[2][0], BRICKS[2][1])
