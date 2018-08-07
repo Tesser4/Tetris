@@ -44,16 +44,18 @@ const PIECES = [
 
 const brickProto = {}
 function popBrick(tetromino, color) {
-  let tetrominoPattern = 0
-  let activeTetromino = tetromino[tetrominoPattern]
+  let activePattern = 0
+  let activeTetromino = tetromino[activePattern]
+  let length = activeTetromino.length
   let x = 0
   let y = 0
 
   let brick = {
     tetromino,
     color,
-    tetrominoPattern,
+    activePattern,
     activeTetromino,
+    length,
     x,
     y
   }
@@ -63,9 +65,8 @@ function popBrick(tetromino, color) {
 }
 
 brickProto.draw = function() {
-  let l = this.activeTetromino.length
-  for (let r = 0; r < l; r++) {
-    for (let c = 0; c < l; c++) {
+  for (let r = 0; r < this.length; r++) {
+    for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
         drawSquare(this.x + r, this.y + c, this.color)
     }
