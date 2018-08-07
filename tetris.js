@@ -107,6 +107,29 @@ brickProto.rotate = function() {
   this.draw()
 }
 
+function control(evt) {
+  switch (evt.keyCode) {
+    case 37:
+      theBrick.moveLeft()
+      dropStart = Date.now()
+      break
+    case 38:
+      theBrick.rotate()
+      dropStart = Date.now()
+      break
+    case 39:
+      theBrick.moveRight()
+      dropStart = Date.now()
+      break
+    case 40:
+      theBrick.moveDown()
+      dropStart = Date.now()
+      break
+  }
+}
+document.addEventListener('keydown', control)
+
+
 
 
 let theBrick = popBrick(BRICKS[2][0], BRICKS[2][1])
@@ -123,8 +146,9 @@ function drop() {
   requestAnimationFrame(drop)
 }
 
+drop()
 
 
 
 
-// video: 56:25
+// video: 1:03:00
