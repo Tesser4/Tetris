@@ -73,6 +73,15 @@ brickProto.draw = function() {
   }
 }
 
+brickProto.undraw = function() {
+  for (let r = 0; r < this.length; r++) {
+    for (let c = 0; c < this.length; c++) {
+      if (this.activeTetromino[r][c])
+        drawSquare(this.x + r, this.y + c, VACANT)
+    }
+  }
+}
+
 
 
 
