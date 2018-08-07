@@ -87,6 +87,18 @@ brickProto.moveDown = function() {
   this.draw()
 }
 
+brickProto.moveRight = function() {
+  this.undraw()
+  this.y += 1
+  this.draw()
+}
+
+brickProto.moveLeft = function() {
+  this.undraw()
+  this.y -= 1
+  this.draw()
+}
+
 
 
 let theBrick = popBrick(BRICKS[2][0], BRICKS[2][1])
