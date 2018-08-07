@@ -62,6 +62,17 @@ function popBrick(tetromino, color) {
   return brick
 }
 
+brickProto.draw = function() {
+  let l = this.activeTetromino.length
+  for (let r = 0; r < l; r++) {
+    for (let c = 0; c < l; c++) {
+      if (this.activeTetromino[r][c])
+        drawSquare(this.x + r, this.y + c, this.color)
+    }
+  }
+}
+
+
 
 
 
