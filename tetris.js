@@ -29,3 +29,41 @@ function drawBoard() {
     }
   }
 }
+
+drawBoard()
+
+const PIECES = [
+  [I, 'cyan'],
+  [J, 'orange'],
+  [L, 'purple'],
+  [O, 'blue'],
+  [S, 'green'],
+  [T, 'yellow'],
+  [Z, 'red']
+]
+
+const brickProto = {}
+function popBrick(tetromino, color) {
+  let tetrominoPattern = 0
+  let activeTetromino = tetromino[tetrominoPattern]
+  let x = 0
+  let y = 0
+
+  let brick = {
+    tetromino,
+    color,
+    tetrominoPattern,
+    activeTetromino,
+    x,
+    y
+  }
+  Object.setPrototypeOf(brick, brickProto)
+
+  return brick
+}
+
+
+
+
+
+// video: 53:00
