@@ -32,7 +32,7 @@ function drawBoard() {
 
 drawBoard()
 
-const PIECES = [
+const BRICKS = [
   [I, 'cyan'],
   [J, 'orange'],
   [L, 'purple'],
@@ -64,27 +64,47 @@ function popBrick(tetromino, color) {
   return brick
 }
 
-brickProto.draw = function() {
+brickProto.fill = function(color) {
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
-        drawSquare(this.x + r, this.y + c, this.color)
+        drawSquare(this.x + r, this.y + c, color)
     }
   }
+}
+
+brickProto.draw = function() {
+  this.fill(this.color)
 }
 
 brickProto.undraw = function() {
-  for (let r = 0; r < this.length; r++) {
-    for (let c = 0; c < this.length; c++) {
-      if (this.activeTetromino[r][c])
-        drawSquare(this.x + r, this.y + c, VACANT)
-    }
+  this.fill(VACANT)
+}
+
+brickProto.moveDown = function() {
+  this.undraw()
+  this.x += 1
+  this.draw()
+}
+
+
+
+let theBrick = popBrick(BRICKS[2][0], BRICKS[2][1])
+theBrick.draw()
+
+let dropStart = Date.now()
+function drop() {
+  let now = Date.now()
+  let delta = now - dropStart
+  if (delta > 800) {
+    theBrick.moveDown()
+    dropStart = Date.now()
   }
+  requestAnimationFrame(drop)
 }
 
 
 
 
 
-
-// video: 53:00
+// video: 56:25
