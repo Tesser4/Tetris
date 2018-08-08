@@ -5,6 +5,7 @@ const ROW = 20
 const COL = 10
 const SQ = squareSize = 20
 const VACANT = 'white'
+const GAME_INTERVAL = 800
 
 function drawSquare(x, y, color) {
   ctx.fillStyle = color
@@ -139,7 +140,7 @@ let dropStart = Date.now()
 function drop() {
   let now = Date.now()
   let delta = now - dropStart
-  if (delta > 800) {
+  if (delta > GAME_INTERVAL) {
     theBrick.moveDown()
     dropStart = Date.now()
   }
