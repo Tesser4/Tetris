@@ -50,7 +50,7 @@ function popBrick(tetromino, color) {
   let length = activeTetromino.length
   let x = 0
   let y = 0
-
+  
   let brick = {
     tetromino,
     color,
@@ -61,7 +61,7 @@ function popBrick(tetromino, color) {
     y
   }
   Object.setPrototypeOf(brick, brickProto)
-
+  
   return brick
 }
 
@@ -69,7 +69,7 @@ brickProto.fill = function(color) {
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
-        drawSquare(this.x + r, this.y + c, color)
+      drawSquare(this.x + r, this.y + c, color)
     }
   }
 }
@@ -129,10 +129,10 @@ brickProto.collision = function(x, y, tetromino) {
         let newY = this.y + y
         if (newY + c >= COL || newY + c < 0 || newX + r >= ROW)
           return true
-      if (board[newX + r][newY + c] !== VACANT)
-        return true
+        if (board[newX + r][newY + c] !== VACANT)
+          return true
+      }
     }
-  }
   }
   return false
 }
@@ -159,11 +159,13 @@ function control(evt) {
 }
 document.addEventListener('keydown', control)
 
-
-
-
-let theBrick = popBrick(BRICKS[2][0], BRICKS[2][1])
-theBrick.draw()
+function getRandomBrick() {
+  let rnd = Math.floor(Math.random() * BRICKS.length)
+  let brick = popBrick(BRICKS[rnd][0], BRICKS[rnd][1])
+  brick.draw()
+  return brick
+}
+let theBrick = getRandomBrick()
 
 let dropStart = Date.now()
 function drop() {
