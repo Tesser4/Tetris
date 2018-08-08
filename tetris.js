@@ -129,10 +129,10 @@ brickProto.collision = function(x, y, tetromino) {
         let newY = this.y + y
         if (newY + c >= COL || newY + c < 0 || newX + r >= ROW)
           return true
-      }
       if (board[newX + r][newY + c] !== VACANT)
         return true
     }
+  }
   }
   return false
 }
