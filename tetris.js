@@ -87,6 +87,11 @@ brickProto.moveDown = function() {
     this.undraw()
     this.x += 1
     this.draw()
+  } else {
+    // todo:
+    // lock the piece
+    // check for full line
+    // generate new piece
   }
 }
 
@@ -125,6 +130,8 @@ brickProto.collision = function(x, y, tetromino) {
         if (newY + c >= COL || newY + c < 0 || newX + r >= ROW)
           return true
       }
+      if (board[newX + r][newY + c] !== VACANT)
+        return true
     }
   }
   return false
