@@ -83,21 +83,27 @@ brickProto.undraw = function() {
 }
 
 brickProto.moveDown = function() {
-  this.undraw()
-  this.x += 1
-  this.draw()
+  if (!this.collision(1, 0, this.activeTetromino)) {
+    this.undraw()
+    this.x += 1
+    this.draw()
+  }
 }
 
 brickProto.moveRight = function() {
-  this.undraw()
-  this.y += 1
-  this.draw()
+  if (!this.collision(0, 1, this.activeTetromino)) {
+    this.undraw()
+    this.y += 1
+    this.draw()
+  }
 }
 
 brickProto.moveLeft = function() {
-  this.undraw()
-  this.y -= 1
-  this.draw()
+  if (!this.collision(0, -1, this.activeTetromino)) {
+    this.undraw()
+    this.y -= 1
+    this.draw()
+  }
 }
 
 brickProto.rotate = function() {
@@ -106,6 +112,20 @@ brickProto.rotate = function() {
   this.activePattern %= this.tetromino.length
   this.activeTetromino = this.tetromino[this.activePattern]
   this.draw()
+}
+
+brickProto.collision = function(x, y, tetromino) {
+  for (let r = 0; r < this.length; r++) {
+    for (let c = 0; c < this.length; c++) {
+      if (tetromino[r][c]) {
+        let newX = this.x + x
+        let newY = this.y + y
+        if (newY + c >= COL || newY + c < 0 || newX + r >= ROW)
+          return true
+      }
+    }
+  }
+  return false
 }
 
 function control(evt) {
