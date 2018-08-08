@@ -111,6 +111,8 @@ brickProto.rotate = function() {
   this.activePattern += 1
   this.activePattern %= this.tetromino.length
   this.activeTetromino = this.tetromino[this.activePattern]
+  if (this.collision(0, 0, this.activeTetromino))
+    this.y = this.y < COL / 2 ? this.y + 1 : this.y - 1
   this.draw()
 }
 
