@@ -6,6 +6,7 @@ const COL = 10
 const SQ = squareSize = 20
 const VACANT = 'white'
 const GAME_INTERVAL = 800
+let gameOver = false
 
 function drawSquare(x, y, color) {
   ctx.fillStyle = color
@@ -69,7 +70,7 @@ brickProto.fill = function(color) {
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
-      drawSquare(this.x + r, this.y + c, color)
+        drawSquare(this.x + r, this.y + c, color)
     }
   }
 }
@@ -90,8 +91,13 @@ brickProto.moveDown = function() {
   } else {
     // todo:
     // lock the piece
+    this.lock()
+
+
     // check for full line
+
     // generate new piece
+    theBrick = getRandomBrick()
   }
 }
 
@@ -119,6 +125,22 @@ brickProto.rotate = function() {
   if (this.collision(0, 0, this.activeTetromino))
     this.y = this.y < COL / 2 ? this.y + 1 : this.y - 1
   this.draw()
+}
+
+brickProto.lock = function() {
+  for (let r = 0; r < this.length; r++) {
+    for (let c = 0; c < this.length; c++) {
+      if (this.activeTetromino[r][c]) {
+        if (this.x === 0) {
+          alert('Game Over')
+          gameOver = true
+          break
+        } else {
+          board[this.x + r][this.y + c] = this.color
+        }
+      }
+    }
+  }
 }
 
 brickProto.collision = function(x, y, tetromino) {
@@ -175,7 +197,8 @@ function drop() {
     theBrick.moveDown()
     dropStart = Date.now()
   }
-  requestAnimationFrame(drop)
+  if (!gameOver)
+    requestAnimationFrame(drop)
 }
 
 drop()
