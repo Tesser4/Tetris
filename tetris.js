@@ -1,11 +1,13 @@
 const canvas = document.querySelector('#tetris')
 const ctx = canvas.getContext('2d')
+const scoreElement = document.querySelector('#score')
 
 const ROW = 20
 const COL = 10
 const SQ = squareSize = 20
 const VACANT = 'white'
 const GAME_INTERVAL = 800
+let score = 0
 let gameOver = false
 
 function drawSquare(x, y, color) {
@@ -144,6 +146,8 @@ brickProto.lock = function() {
             : board[rr][c] = board[rr - 1][c]
         }
       }
+      score += 10
+      scoreElement.innerHTML = score
       drawBoard()
     }
   }
@@ -208,8 +212,3 @@ function drop() {
 }
 
 drop()
-
-
-
-
-// video: 1:13:17
