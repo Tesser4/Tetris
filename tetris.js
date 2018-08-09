@@ -89,14 +89,7 @@ brickProto.moveDown = function() {
     this.x += 1
     this.draw()
   } else {
-    // todo:
-    // lock the piece
     this.lock()
-
-
-    // check for full line
-
-    // generate new piece
     theBrick = getRandomBrick()
   }
 }
@@ -139,6 +132,19 @@ brickProto.lock = function() {
           board[this.x + r][this.y + c] = this.color
         }
       }
+    }
+  }
+  // Full lines?
+  for (let r = 0; r < ROW; r++) {
+    if (board[r].every(x => x !== VACANT)) {
+      for (let rr = r; rr >= 0; rr--) {
+        for (let c = 0; c < COL; c++) {
+          rr === 0
+            ? board[rr][c] = VACANT
+            : board[rr][c] = board[rr - 1][c]
+        }
+      }
+      drawBoard()
     }
   }
 }
@@ -206,4 +212,4 @@ drop()
 
 
 
-// video: 1:03:00
+// video: 1:13:17
