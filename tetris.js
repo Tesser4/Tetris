@@ -34,15 +34,13 @@ function drawBoard() {
   }
 }
 
-drawBoard()
-
 const BRICKS = [
-  [I, 'cyan'],
-  [J, 'orange'],
+  [I, 'steelblue'],
+  [J, 'orangered'],
   [L, 'purple'],
   [O, 'blue'],
   [S, 'green'],
-  [T, 'yellow'],
+  [T, 'gold'],
   [Z, 'red']
 ]
 
@@ -68,6 +66,7 @@ function control(evt) {
 }
 document.addEventListener('keydown', control)
 
+drawBoard()
 let theBrick = getRandomBrick()
 theBrick.draw()
 
