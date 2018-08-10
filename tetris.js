@@ -46,8 +46,10 @@ const BRICKS = [
   [Z, 'red']
 ]
 
-const brickProto = {}
-function popBrick(tetromino, color) {
+function getRandomBrick() {
+  let rnd = Math.floor(Math.random() * BRICKS.length)
+  let tetromino = BRICKS[rnd][0]
+  let color = BRICKS[rnd][1]
   let activePattern = 0
   let activeTetromino = tetromino[activePattern]
   let length = activeTetromino.length
@@ -64,9 +66,11 @@ function popBrick(tetromino, color) {
     y
   }
   Object.setPrototypeOf(brick, brickProto)
-  
+
   return brick
 }
+
+const brickProto = {}
 
 brickProto.fill = function(color) {
   for (let r = 0; r < this.length; r++) {
@@ -136,21 +140,19 @@ brickProto.lock = function() {
       }
     }
   }
-  // Full lines?
-  for (let r = 0; r < ROW; r++) {
-    if (board[r].every(x => x !== VACANT)) {
-      for (let rr = r; rr >= 0; rr--) {
-        for (let c = 0; c < COL; c++) {
-          rr === 0
-            ? board[rr][c] = VACANT
-            : board[rr][c] = board[rr - 1][c]
-        }
+  // Check for full lines and manage them
+  board.forEach((line, i) => {
+    if (line.every(x => x !== VACANT)) {
+      for (let r = i; r >= 0; r--) {
+        r === 0
+          ? board[r].fill(VACANT)
+          : board[r] = board[r - 1]
       }
       score += 10
       scoreElement.innerHTML = score
       drawBoard()
     }
-  }
+  }) 
 }
 
 brickProto.collision = function(x, y, tetromino) {
@@ -191,24 +193,16 @@ function control(evt) {
 }
 document.addEventListener('keydown', control)
 
-function getRandomBrick() {
-  let rnd = Math.floor(Math.random() * BRICKS.length)
-  let brick = popBrick(BRICKS[rnd][0], BRICKS[rnd][1])
-  brick.draw()
-  return brick
-}
 let theBrick = getRandomBrick()
+theBrick.draw()
 
 let dropStart = Date.now()
-function drop() {
+;(function play() {
   let now = Date.now()
   let delta = now - dropStart
   if (delta > GAME_INTERVAL) {
     theBrick.moveDown()
     dropStart = Date.now()
   }
-  if (!gameOver)
-    requestAnimationFrame(drop)
-}
-
-drop()
+  if (!gameOver) requestAnimationFrame(play)
+})()
