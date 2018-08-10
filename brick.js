@@ -102,6 +102,15 @@ brickProto.lock = function() {
       }
       score += 10
       scoreElement.innerHTML = score
+      if (score >= nextLevel) {
+        level += 1
+        nextLevel +=100
+        levelElement.innerHTML = level
+        gameInterval =
+          gameInterval === 300
+            ? 300
+            : gameInterval - 100
+      }
       drawBoard()
     }
   }) 

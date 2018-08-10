@@ -1,13 +1,16 @@
 const canvas = document.querySelector('#tetris')
 const ctx = canvas.getContext('2d')
 const scoreElement = document.querySelector('#score')
+const levelElement = document.querySelector('#level')
 
 const ROW = 20
 const COL = 10
 const SQ = squareSize = 20
 const VACANT = 'white'
-const GAME_INTERVAL = 800
+let gameInterval = 700
 let score = 0
+let level = 1
+let nextLevel = 100
 let gameOver = false
 
 function drawSquare(x, y, color) {
@@ -74,7 +77,7 @@ let dropStart = Date.now()
 ;(function play() {
   let now = Date.now()
   let delta = now - dropStart
-  if (delta > GAME_INTERVAL) {
+  if (delta > gameInterval) {
     theBrick.moveDown()
     dropStart = Date.now()
   }
