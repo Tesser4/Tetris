@@ -1,4 +1,4 @@
-function getRandomBrick() {
+function getRandomBrick(board) {
   let rnd = Math.floor(Math.random() * BRICKS.length)
   let tetromino = BRICKS[rnd][0]
   let color = BRICKS[rnd][1]
@@ -28,7 +28,7 @@ brickProto.fill = function(color) {
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
-        drawSquare(this.x + r, this.y + c, color)
+        board.drawSquare(this.x + r, this.y + c, color)
     }
   }
 }
@@ -38,7 +38,7 @@ brickProto.draw = function() {
 }
 
 brickProto.undraw = function() {
-  this.fill(VACANT)
+  this.fill(EMPTY)
 }
 
 brickProto.moveDown = function() {
@@ -48,7 +48,7 @@ brickProto.moveDown = function() {
     this.draw()
   } else {
     this.lock()
-    theBrick = getRandomBrick()
+    brick = getRandomBrick()
   }
 }
 
@@ -87,33 +87,29 @@ brickProto.lock = function() {
           gameOver = true
           break
         } else {
-          board[this.x + r][this.y + c] = this.color
+          board.setSquare(this.x + r, this.y + c, this.color)
         }
       }
     }
   }
+  console.log('out', board.hasFullRow())
   // Check for full lines and manage them
-  board.forEach((line, i) => {
-    if (line.every(x => x !== VACANT)) {
-      for (let r = i; r >= 0; r--) {
-        r === 0
-          ? board[r].fill(VACANT)
-          : board[r] = board[r - 1]
-      }
-      score += 10
-      scoreElement.innerHTML = score
-      if (score >= nextLevel) {
-        level += 1
-        nextLevel +=100
-        levelElement.innerHTML = level
-        gameInterval =
-          gameInterval === 300
-            ? 300
-            : gameInterval - 100
-      }
-      drawBoard()
+  while (board.hasFullRow()) {
+    console.log('in', board.hasFullRow())
+    board.deleteRow(board.hasFullRow())
+    score += 10
+    scoreElement.innerHTML = score
+    if (score >= nextLevel) {
+      level += 1
+      nextLevel +=100
+      levelElement.innerHTML = level
+      gameInterval =
+        gameInterval === 300
+          ? 300
+          : gameInterval - 100
     }
-  }) 
+    board.draw()
+  }
 }
 
 brickProto.collision = function(x, y, tetromino) {
@@ -124,7 +120,7 @@ brickProto.collision = function(x, y, tetromino) {
         let newY = this.y + y
         if (newY + c >= COL || newY + c < 0 || newX + r >= ROW)
           return true
-        if (board[newX + r][newY + c] !== VACANT)
+        if (!board.isSquareEmpty(newX + r, newY + c))
           return true
       }
     }
