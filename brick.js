@@ -24,21 +24,22 @@ function getRandomBrick(board) {
 
 const brickProto = {}
 
-brickProto.fill = function(color) {
+brickProto.draw = function() {
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
-        board.drawSquare(this.x + r, this.y + c, color)
+        board.drawSquare(this.x + r, this.y + c, this.color)
     }
   }
 }
 
-brickProto.draw = function() {
-  this.fill(this.color)
-}
-
 brickProto.undraw = function() {
-  this.fill(EMPTY)
+  for (let r = 0; r < this.length; r++) {
+    for (let c = 0; c < this.length; c++) {
+      if (this.activeTetromino[r][c])
+        board.undrawSquare(this.x + r, this.y + c)
+}
+  }
 }
 
 brickProto.moveDown = function() {
@@ -92,7 +93,6 @@ brickProto.lock = function() {
       }
     }
   }
-  console.log('out', board.hasFullRow())
   // Check for full lines and manage them
   while (board.hasFullRow()) {
     console.log('in', board.hasFullRow())

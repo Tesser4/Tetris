@@ -24,7 +24,15 @@ function getBoard(rows, columns, squareSize, emptySquare) {
     ctx.strokeRect(y * squareSize, x * squareSize, squareSize, squareSize)
   }
 
-  function drawBoard() {
+  function undrawSquare(x, y) {
+    ctx.fillStyle = emptySquare
+    ctx.fillRect(y * squareSize, x * squareSize, squareSize, squareSize)
+  
+    ctx.strokeStyle = 'black'
+    ctx.strokeRect(y * squareSize, x * squareSize, squareSize, squareSize)
+  }
+
+  function draw() {
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
         drawSquare(r, c, board[r][c])
@@ -33,13 +41,13 @@ function getBoard(rows, columns, squareSize, emptySquare) {
   }
 
   function hasFullRow() {
-    let fullLine = null
-    board.forEach((line, i) => {
-      if (line.every(x => x !== emptySquare)) {
-        fullLine = i
+    let fullRow = null
+    board.forEach((row, i) => {
+      if (row.every(x => x !== emptySquare)) {
+        fullRow = i
       }
     })
-    return fullLine
+    return fullRow
   }
 
   function deleteRow(row) {
@@ -58,7 +66,8 @@ function getBoard(rows, columns, squareSize, emptySquare) {
     isSquareEmpty,
     setSquare,
     drawSquare,
-    draw: drawBoard,
+    undrawSquare,
+    draw,
     hasFullRow,
     deleteRow,
     logme
