@@ -7,12 +7,11 @@ const ROW = 20
 const COL = 10
 const SQ = 20
 const EMPTY = 'white'
+
 let board = getBoard(ROW, COL, SQ, EMPTY)
+let score = getScoreManager()
 
 let gameInterval = 700
-let score = 0
-let level = 1
-let nextLevel = 100
 let gameOver = false
 
 const BRICKS = [
@@ -48,7 +47,7 @@ function control(evt) {
 document.addEventListener('keydown', control)
 
 board.draw()
-let brick = getRandomBrick(board)
+let brick = getRandomBrick(board, score)
 brick.draw()
 
 let dropStart = Date.now()

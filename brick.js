@@ -1,4 +1,4 @@
-function getRandomBrick(board) {
+function getRandomBrick(board, score) {
   let rnd = Math.floor(Math.random() * BRICKS.length)
   let tetromino = BRICKS[rnd][0]
   let color = BRICKS[rnd][1]
@@ -38,7 +38,7 @@ brickProto.undraw = function() {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
         board.undrawSquare(this.x + r, this.y + c)
-}
+    }
   }
 }
 
@@ -95,19 +95,18 @@ brickProto.lock = function() {
   }
   // Check for full lines and manage them
   while (board.hasFullRow()) {
-    console.log('in', board.hasFullRow())
     board.deleteRow(board.hasFullRow())
-    score += 10
-    scoreElement.innerHTML = score
-    if (score >= nextLevel) {
-      level += 1
-      nextLevel +=100
-      levelElement.innerHTML = level
+
+    if (score.increaseScore()) {
+      console.log('Level has been changed')
       gameInterval =
         gameInterval === 300
           ? 300
           : gameInterval - 100
     }
+    
+    scoreElement.innerHTML = score.getPoints()
+    levelElement.innerHTML = score.getLevel()
     board.draw()
   }
 }
