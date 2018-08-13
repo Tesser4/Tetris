@@ -51,7 +51,6 @@ let dropStart = Date.now()
 
     if (locked) {
       gameOver = brick.lock()
-      console.log(gameOver)
       brick = getRandomBrick(board)
 
       while (board.hasFullRow()) {
@@ -75,7 +74,6 @@ let dropStart = Date.now()
   } else {
     document.removeEventListener('keydown', control)
     alert('Game Over')
-    console.log('Out of animation frame')
   }
 
 })()

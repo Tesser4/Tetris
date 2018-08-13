@@ -1,5 +1,3 @@
-let count = 0
-
 function getRandomBrick(board) {
   const BRICKS = [
     [I, 'steelblue'],
@@ -31,7 +29,6 @@ function getRandomBrick(board) {
   }
   Object.setPrototypeOf(brick, brickProto)
 
-  console.log(`Brick No: ${++count}`)
   return brick
 }
 
@@ -96,8 +93,6 @@ brickProto.rotate = function() {
 }
 
 brickProto.lock = function() {
-  console.log('Board at the beggining of lock()')
-  board.logme()
   let gameOver = false
   
   for (let r = 0; r < this.length; r++) {
@@ -112,8 +107,6 @@ brickProto.lock = function() {
       }
     }
   }
-  console.log('Board at the end of lock()')
-  board.logme()
   
   return gameOver
 }

@@ -1,19 +1,20 @@
 function getBoard(rows, columns, squareSize, emptySquare) {
   
   let board = []
-  for (let r = 0; r < rows; r++) {
-    board[r] = []
-    for (let c = 0; c < columns; c++) {
-      board[r][c] = emptySquare
-    }
+  for (let i = 0; i < rows * columns; i++) {
+      board[i] = emptySquare
+  }
+
+  function parseCoords(...coords) {
+    return Number(coords.join(''))
   }
 
   function isSquareEmpty(x, y) {
-    return board[x][y] === emptySquare
+    return board[parseCoords(x, y)] === emptySquare
   }
 
   function setSquare(x, y, color) {
-    board[x][y] = color
+    board[parseCoords(x, y)] = color
   }
   
   function drawSquare(x, y, color) {
@@ -35,26 +36,27 @@ function getBoard(rows, columns, squareSize, emptySquare) {
   function draw() {
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
-        drawSquare(r, c, board[r][c])
+        drawSquare(r, c, board[parseCoords(r, c)])
       }
     }
   }
 
   function hasFullRow() {
     let fullRow = null
-    board.forEach((row, i) => {
-      if (row.every(x => x !== emptySquare)) {
-        fullRow = i
-      }
-    })
+
+    for (let i = 0; i < rows; i++) {
+      let row = board.slice(i * columns, i * columns + columns)
+      if (row.every(x => x !== emptySquare)) fullRow = i
+    }
+    
     return fullRow
   }
 
   function deleteRow(row) {
-    for (let x = row; x >= 0; x--) {
-      x === 0
-        ? board[x].fill(emptySquare)
-        : board[x] = board[x - 1]
+    for (let x = row * columns + columns - 1; x >= 0; x--) {
+      x < columns
+        ? board[x] = emptySquare
+        : board[x] = board[x - columns]
     }
   }
 
@@ -73,9 +75,3 @@ function getBoard(rows, columns, squareSize, emptySquare) {
     logme
   }
 }
-
-
-
-
-
-
