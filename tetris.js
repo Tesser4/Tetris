@@ -11,7 +11,7 @@ const EMPTY = 'white'
 let board = getBoard(ROW, COL, SQ, EMPTY)
 let score = getScoreManager()
 
-let gameInterval = 700
+let gameInterval = 600
 let gameOver = false
 
 function control(evt) {
@@ -57,7 +57,7 @@ let dropStart = Date.now()
         board.deleteRow(board.hasFullRow())
 
         if (score.increaseScore()) {
-          gameInterval = gameInterval === 300
+          gameInterval = gameInterval === 200
             ? gameInterval
             : gameInterval - 100
         }
@@ -69,11 +69,11 @@ let dropStart = Date.now()
     }
   }
 
-  if (!gameOver) {
-    requestAnimationFrame(play)
-  } else {
+  if (gameOver) {
     document.removeEventListener('keydown', control)
     alert('Game Over')
+  } else {
+    requestAnimationFrame(play)
   }
 
 })()
