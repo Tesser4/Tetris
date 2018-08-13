@@ -14,16 +14,6 @@ let score = getScoreManager()
 let gameInterval = 700
 let gameOver = false
 
-const BRICKS = [
-  [I, 'steelblue'],
-  [J, 'orangered'],
-  [L, 'purple'],
-  [O, 'blue'],
-  [S, 'green'],
-  [T, 'gold'],
-  [Z, 'red']
-]
-
 function control(evt) {
   switch (evt.keyCode) {
     case 37:
@@ -47,16 +37,45 @@ function control(evt) {
 document.addEventListener('keydown', control)
 
 board.draw()
-let brick = getRandomBrick(board, score)
+let brick = getRandomBrick(board)
 brick.draw()
 
 let dropStart = Date.now()
 ;(function play() {
   let now = Date.now()
   let delta = now - dropStart
+
   if (delta > gameInterval) {
-    brick.moveDown()
+    let locked = brick.moveDown()
     dropStart = Date.now()
+
+    if (locked) {
+      gameOver = brick.lock()
+      console.log(gameOver)
+      brick = getRandomBrick(board)
+
+      while (board.hasFullRow()) {
+        board.deleteRow(board.hasFullRow())
+
+        if (score.increaseScore()) {
+          gameInterval = gameInterval === 300
+            ? gameInterval
+            : gameInterval - 100
+        }
+
+        scoreElement.innerHTML = score.getPoints()
+        levelElement.innerHTML = score.getLevel()
+        board.draw()
+      }
+    }
   }
-  if (!gameOver) requestAnimationFrame(play)
+
+  if (!gameOver) {
+    requestAnimationFrame(play)
+  } else {
+    document.removeEventListener('keydown', control)
+    alert('Game Over')
+    console.log('Out of animation frame')
+  }
+
 })()

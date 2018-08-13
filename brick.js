@@ -1,4 +1,16 @@
-function getRandomBrick(board, score) {
+let count = 0
+
+function getRandomBrick(board) {
+  const BRICKS = [
+    [I, 'steelblue'],
+    [J, 'orangered'],
+    [L, 'purple'],
+    [O, 'blue'],
+    [S, 'green'],
+    [T, 'gold'],
+    [Z, 'red']
+  ]
+  
   let rnd = Math.floor(Math.random() * BRICKS.length)
   let tetromino = BRICKS[rnd][0]
   let color = BRICKS[rnd][1]
@@ -19,6 +31,7 @@ function getRandomBrick(board, score) {
   }
   Object.setPrototypeOf(brick, brickProto)
 
+  console.log(`Brick No: ${++count}`)
   return brick
 }
 
@@ -43,14 +56,17 @@ brickProto.undraw = function() {
 }
 
 brickProto.moveDown = function() {
+  let locked = false
+
   if (!this.collision(1, 0, this.activeTetromino)) {
     this.undraw()
     this.x += 1
     this.draw()
   } else {
-    this.lock()
-    brick = getRandomBrick()
+    locked = true
   }
+
+  return locked
 }
 
 brickProto.moveRight = function() {
@@ -80,11 +96,14 @@ brickProto.rotate = function() {
 }
 
 brickProto.lock = function() {
+  console.log('Board at the beggining of lock()')
+  board.logme()
+  let gameOver = false
+  
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c]) {
         if (this.x === 0) {
-          alert('Game Over')
           gameOver = true
           break
         } else {
@@ -93,22 +112,10 @@ brickProto.lock = function() {
       }
     }
   }
-  // Check for full lines and manage them
-  while (board.hasFullRow()) {
-    board.deleteRow(board.hasFullRow())
-
-    if (score.increaseScore()) {
-      console.log('Level has been changed')
-      gameInterval =
-        gameInterval === 300
-          ? 300
-          : gameInterval - 100
-    }
-    
-    scoreElement.innerHTML = score.getPoints()
-    levelElement.innerHTML = score.getLevel()
-    board.draw()
-  }
+  console.log('Board at the end of lock()')
+  board.logme()
+  
+  return gameOver
 }
 
 brickProto.collision = function(x, y, tetromino) {
