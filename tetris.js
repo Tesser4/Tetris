@@ -5,7 +5,7 @@ const levelElement = document.querySelector('#level')
 
 const ROW = 20
 const COL = 10
-const SQ = 20
+const SQ = 30
 const EMPTY = 'white'
 
 let board = getBoard(ROW, COL, SQ, EMPTY)
