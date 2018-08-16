@@ -9,6 +9,10 @@ function getBoard(rows, columns, squareSize, emptySquare) {
     return Number(coords.join(''))
   }
 
+  function getColumns() {
+    return columns
+  }
+  
   function isSquareEmpty(x, y) {
     return board[parseCoords(x, y)] === emptySquare
   }
@@ -65,6 +69,7 @@ function getBoard(rows, columns, squareSize, emptySquare) {
   }
 
   return {
+    getColumns,
     isSquareEmpty,
     setSquare,
     drawSquare,
