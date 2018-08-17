@@ -12,10 +12,12 @@ const COL_NEXT = 4
 const SQ = 30
 const EMPTY = 'white'
 
-let boardMain = getBoard(ROW_MAIN, COL_MAIN, SQ, EMPTY, ctxMain)
-let boardNext = getBoard(ROW_NEXT, COL_NEXT, SQ, EMPTY, ctxNext)
+const boardMain = getBoard(ROW_MAIN, COL_MAIN, SQ, EMPTY, ctxMain)
+const boardNext = getBoard(ROW_NEXT, COL_NEXT, SQ, EMPTY, ctxNext)
+let currentBrick = getRandomBrick(boardMain, 0, 3)
+let nextBrick = getRandomBrick(boardNext, 0, 0)
 
-let score = getScoreManager()
+const score = getScoreManager()
 
 let gameInterval = 600
 let gameOver = false
@@ -23,31 +25,28 @@ let gameOver = false
 function control(evt) {
   switch (evt.keyCode) {
     case 37:
-      brick.moveLeft()
+      currentBrick.moveLeft()
       dropStart = Date.now()
       break
     case 38:
-      brick.rotate()
+      currentBrick.rotate()
       dropStart = Date.now()
       break
     case 39:
-      brick.moveRight()
+      currentBrick.moveRight()
       dropStart = Date.now()
       break
     case 40:
-      brick.moveDown()
+      currentBrick.moveDown()
       dropStart = Date.now()
       break
   }
 }
 document.addEventListener('keydown', control)
 
-boardMain.draw()
-boardNext.draw()
-
-let brick = getRandomBrick(boardMain, 0, 3)
-let nextBrick = getRandomBrick(boardNext, 0, 0)
-brick.draw()
+const boards = [boardMain, boardNext]
+boards.forEach(x => x.draw())
+currentBrick.draw()
 nextBrick.draw()
 
 let dropStart = Date.now()
@@ -56,32 +55,35 @@ let dropStart = Date.now()
   let delta = now - dropStart
 
   if (delta > gameInterval) {
-    let locked = brick.moveDown()
+    let locked = currentBrick.moveDown()
     dropStart = Date.now()
 
     if (locked) {
-      gameOver = brick.lock()
+      gameOver = currentBrick.lock()
+
       nextBrick.undraw()
-      brick = nextBrick
-      brick.x = 0
-      brick.y = 3
-      brick.board = boardMain
+      currentBrick = nextBrick
+      currentBrick.y = 3
+      currentBrick.board = boardMain
+      currentBrick.draw()
       nextBrick = getRandomBrick(boardNext, 0, 0)
       
       while (boardMain.hasFullRow()) {
         boardMain.deleteRow(boardMain.hasFullRow())
-        
-        if (score.increaseScore()) {
+
+        let levelChanged = score.increaseScore()
+        if (levelChanged) {
           gameInterval = gameInterval === 200
-          ? gameInterval
-          : gameInterval - 100
+            ? gameInterval
+            : gameInterval - 100
+          levelElement.innerHTML = score.getLevel()
         }
-        
+
         scoreElement.innerHTML = score.getPoints()
-        levelElement.innerHTML = score.getLevel()
-        boardMain.draw()
-        boardNext.draw()
       }
+
+      boards.forEach(x => x.draw())
+      currentBrick.draw()
       nextBrick.draw()
     }
   }
