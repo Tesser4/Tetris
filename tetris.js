@@ -19,7 +19,7 @@ let nextBrick = getRandomBrick(boardNext, 0, 0)
 
 const score = getScoreManager()
 
-let gameInterval = 600
+let gameInterval = 500
 let gameOver = false
 
 function control(evt) {
@@ -73,7 +73,7 @@ let dropStart = Date.now()
 
         let levelChanged = score.increaseScore()
         if (levelChanged) {
-          gameInterval = gameInterval === 200
+          gameInterval = gameInterval === 100
             ? gameInterval
             : gameInterval - 100
           levelElement.innerHTML = score.getLevel()
