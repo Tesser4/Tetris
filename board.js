@@ -1,4 +1,4 @@
-function getBoard(rows, columns, squareSize, emptySquare) {
+function getBoard(rows, columns, squareSize, emptySquare, ctx) {
   
   let board = []
   for (let i = 0; i < rows * columns; i++) {
@@ -9,6 +9,10 @@ function getBoard(rows, columns, squareSize, emptySquare) {
     return Number(coords.join(''))
   }
 
+  function getRows() {
+    return rows
+  }
+  
   function getColumns() {
     return columns
   }
@@ -69,6 +73,7 @@ function getBoard(rows, columns, squareSize, emptySquare) {
   }
 
   return {
+    getRows,
     getColumns,
     isSquareEmpty,
     setSquare,

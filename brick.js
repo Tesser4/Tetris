@@ -1,4 +1,4 @@
-function getRandomBrick(board) {
+function getRandomBrick(board, x, y) {
   const BRICKS = [
     [I, 'steelblue'],
     [J, 'orangered'],
@@ -15,8 +15,6 @@ function getRandomBrick(board) {
   let activePattern = 0
   let activeTetromino = tetromino[activePattern]
   let length = activeTetromino.length
-  let x = 0
-  let y = 3
   
   let brick = {
     tetromino,
@@ -25,7 +23,8 @@ function getRandomBrick(board) {
     activeTetromino,
     length,
     x,
-    y
+    y,
+    board
   }
   Object.setPrototypeOf(brick, brickProto)
 
@@ -38,7 +37,7 @@ brickProto.draw = function() {
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
-        board.drawSquare(this.x + r, this.y + c, this.color)
+        this.board.drawSquare(this.x + r, this.y + c, this.color)
     }
   }
 }
@@ -47,7 +46,7 @@ brickProto.undraw = function() {
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
-        board.undrawSquare(this.x + r, this.y + c)
+        this.board.undrawSquare(this.x + r, this.y + c)
     }
   }
 }
@@ -90,12 +89,12 @@ brickProto.rotate = function() {
   if (this.collision(0, 0, this.activeTetromino)) {
     let kickWall =
       this.y === -2 ||
-      this.y === board.getColumns() - 2 &&
+      this.y === this.board.getColumns() - 2 &&
       this.tetromino === I &&
       this.activePattern === 0
         ? 2
         : 1
-    this.y = this.y < COL / 2 ? this.y + kickWall : this.y - kickWall
+    this.y = this.y < this.board.getColumns() / 2 ? this.y + kickWall : this.y - kickWall
   }
   this.draw()
 }
@@ -110,7 +109,7 @@ brickProto.lock = function() {
           gameOver = true
           break
         } else {
-          board.setSquare(this.x + r, this.y + c, this.color)
+          this.board.setSquare(this.x + r, this.y + c, this.color)
         }
       }
     }
@@ -125,9 +124,9 @@ brickProto.collision = function(x, y, tetromino) {
       if (tetromino[r][c]) {
         let newX = this.x + x
         let newY = this.y + y
-        if (newY + c >= COL || newY + c < 0 || newX + r >= ROW)
+        if (newY + c >= this.board.getColumns() || newY + c < 0 || newX + r >= this.board.getRows())
           return true
-        if (!board.isSquareEmpty(newX + r, newY + c))
+        if (!this.board.isSquareEmpty(newX + r, newY + c))
           return true
       }
     }
