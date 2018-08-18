@@ -4,6 +4,7 @@ const canvasNext = document.querySelector('#nextbrick')
 const ctxNext = canvasNext.getContext('2d')
 const scoreElement = document.querySelector('#score')
 const levelElement = document.querySelector('#level')
+const highScoreElement = document.querySelector('#highScore')
 
 const ROW_MAIN = 20
 const COL_MAIN = 10
@@ -18,6 +19,7 @@ let currentBrick = getRandomBrick(boardMain, 0, 3)
 let nextBrick = getRandomBrick(boardNext, 0, 0)
 
 const score = getScoreManager()
+highScoreElement.innerHTML = score.getHighScore()
 
 let gameInterval = 500
 let gameOver = false
@@ -55,8 +57,8 @@ let dropStart = Date.now()
   let delta = now - dropStart
 
   if (delta > gameInterval) {
-    let locked = currentBrick.moveDown()
     dropStart = Date.now()
+    let locked = currentBrick.moveDown()
 
     if (locked) {
       gameOver = currentBrick.lock()
@@ -71,7 +73,7 @@ let dropStart = Date.now()
       while (boardMain.hasFullRow()) {
         boardMain.deleteRow(boardMain.hasFullRow())
 
-        let levelChanged = score.increaseScore()
+        let levelChanged = score.increasePoints()
         if (levelChanged) {
           gameInterval = gameInterval === 100
             ? gameInterval
@@ -90,6 +92,12 @@ let dropStart = Date.now()
 
   if (gameOver) {
     document.removeEventListener('keydown', control)
+
+    if (score.getHighScore() < score.getPoints()) {
+      score.setHighScore(score.getPoints())
+      highScoreElement.innerHTML = score.getHighScore()
+    }
+
     alert('Game Over')
   } else {
     requestAnimationFrame(play)

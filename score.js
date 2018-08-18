@@ -5,7 +5,7 @@ function getScoreManager() {
   let level = 1
   let nextLevel = 100
 
-  function increaseScore() {
+  function increasePoints() {
     points += SCORE_STEP
     let levelChanged = false
     
@@ -26,9 +26,19 @@ function getScoreManager() {
     return level
   }
 
+  function setHighScore(highScore) {
+    localStorage.setItem('highScore', JSON.stringify(highScore))
+  }
+
+  function getHighScore() {
+    return Number(localStorage.getItem('highScore')) || 0
+  }
+
   return {
-    increaseScore,
+    increasePoints,
     getPoints,
-    getLevel
+    getLevel,
+    setHighScore,
+    getHighScore
   }
 }

@@ -3,10 +3,7 @@
   <head>
     <title>Tetris</title>
     <style>
-      #score {
-        display: inline-block;
-      }
-      #level {
+      .inline {
         display: inline-block;
       }
       div {
@@ -21,10 +18,13 @@
     <canvas id="tetris" width="300" height="600"></canvas>
     <canvas id="nextbrick" width="120" height="120"></canvas>
     <div>
-      Score: <div id="score">0</div>
+      Score: <div id="score" class="inline">0</div>
     </div>
     <div>
-      Level: <div id="level">1</div>
+      Level: <div id="level" class="inline">1</div>
+    </div>
+    <div>
+      High Score: <div id="highScore" class="inline"></div>
     </div>
     
     
