@@ -1,171 +1,179 @@
 function getRandomBrick(board, x, y) {
-  const tetrominoes = {
-    I: [
-      [
-        [0, 0, 0, 0],
-        [1, 1, 1, 1],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
+  const tetrominoes = [
+    { name: 'I',
+      pattern: [
+        [
+          [0, 0, 0, 0],
+          [1, 1, 1, 1],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 1, 0],
+          [0, 0, 1, 0],
+          [0, 0, 1, 0],
+          [0, 0, 1, 0]
+        ],
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [1, 1, 1, 1],
+          [0, 0, 0, 0]
+        ],
+        [
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 0, 0]
+        ]
       ],
-      [
-        [0, 0, 1, 0],
-        [0, 0, 1, 0],
-        [0, 0, 1, 0],
-        [0, 0, 1, 0]
+      color: 'steelblue'
+    },
+    { name: 'J',
+      pattern: [
+        [
+          [1, 0, 0],
+          [1, 1, 1],
+          [0, 0, 0]
+        ],
+        [
+          [0, 1, 1],
+          [0, 1, 0],
+          [0, 1, 0]
+        ],
+        [
+          [0, 0, 0],
+          [1, 1, 1],
+          [0, 0, 1]
+        ],
+        [
+          [0, 1, 0],
+          [0, 1, 0],
+          [1, 1, 0]
+        ]
       ],
-      [
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [1, 1, 1, 1],
-        [0, 0, 0, 0]
+      color: 'orangered'
+    },
+    { name: 'L',
+      pattern: [
+        [
+          [0, 0, 1],
+          [1, 1, 1],
+          [0, 0, 0]
+        ],
+        [
+          [0, 1, 0],
+          [0, 1, 0],
+          [0, 1, 1]
+        ],
+        [
+          [0, 0, 0],
+          [1, 1, 1],
+          [1, 0, 0]
+        ],
+        [
+          [1, 1, 0],
+          [0, 1, 0],
+          [0, 1, 0]
+        ]
       ],
-      [
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
-        [0, 1, 0, 0]
-      ]
-    ],
-    J: [
-      [
-        [1, 0, 0],
-        [1, 1, 1],
-        [0, 0, 0]
+      color: 'purple'
+    },
+    { name: 'O',
+      pattern: [
+        [
+          [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [0, 1, 1, 0],
+          [0, 0, 0, 0]
+        ]
       ],
-      [
-        [0, 1, 1],
-        [0, 1, 0],
-        [0, 1, 0]
+      color: 'blue'
+    },
+    { name: 'S',
+      pattern: [
+        [
+          [0, 1, 1],
+          [1, 1, 0],
+          [0, 0, 0]
+        ],
+        [
+          [0, 1, 0],
+          [0, 1, 1],
+          [0, 0, 1]
+        ],
+        [
+          [0, 0, 0],
+          [0, 1, 1],
+          [1, 1, 0]
+        ],
+        [
+          [1, 0, 0],
+          [1, 1, 0],
+          [0, 1, 0]
+        ]
       ],
-      [
-        [0, 0, 0],
-        [1, 1, 1],
-        [0, 0, 1]
+      color: 'green'
+    },
+    { name: 'T',
+      pattern: [
+        [
+          [0, 1, 0],
+          [1, 1, 1],
+          [0, 0, 0]
+        ],
+        [
+          [0, 1, 0],
+          [0, 1, 1],
+          [0, 1, 0]
+        ],
+        [
+          [0, 0, 0],
+          [1, 1, 1],
+          [0, 1, 0]
+        ],
+        [
+          [0, 1, 0],
+          [1, 1, 0],
+          [0, 1, 0]
+        ]
       ],
-      [
-        [0, 1, 0],
-        [0, 1, 0],
-        [1, 1, 0]
-      ]
-    ],
-    L: [
-      [
-        [0, 0, 1],
-        [1, 1, 1],
-        [0, 0, 0]
+      color: 'gold'
+    },
+    { name: 'Z',
+      pattern: [
+        [
+          [1, 1, 0],
+          [0, 1, 1],
+          [0, 0, 0]
+        ],
+        [
+          [0, 0, 1],
+          [0, 1, 1],
+          [0, 1, 0]
+        ],
+        [
+          [0, 0, 0],
+          [1, 1, 0],
+          [0, 1, 1]
+        ],
+        [
+          [0, 1, 0],
+          [1, 1, 0],
+          [1, 0, 0]
+        ]
       ],
-      [
-        [0, 1, 0],
-        [0, 1, 0],
-        [0, 1, 1]
-      ],
-      [
-        [0, 0, 0],
-        [1, 1, 1],
-        [1, 0, 0]
-      ],
-      [
-        [1, 1, 0],
-        [0, 1, 0],
-        [0, 1, 0]
-      ]
-    ],
-    O: [
-      [
-        [0, 0, 0, 0],
-        [0, 1, 1, 0],
-        [0, 1, 1, 0],
-        [0, 0, 0, 0]
-      ]
-    ],
-    S: [
-      [
-        [0, 1, 1],
-        [1, 1, 0],
-        [0, 0, 0]
-      ],
-      [
-        [0, 1, 0],
-        [0, 1, 1],
-        [0, 0, 1]
-      ],
-      [
-        [0, 0, 0],
-        [0, 1, 1],
-        [1, 1, 0]
-      ],
-      [
-        [1, 0, 0],
-        [1, 1, 0],
-        [0, 1, 0]
-      ]
-    ],
-    T: [
-      [
-        [0, 1, 0],
-        [1, 1, 1],
-        [0, 0, 0]
-      ],
-      [
-        [0, 1, 0],
-        [0, 1, 1],
-        [0, 1, 0]
-      ],
-      [
-        [0, 0, 0],
-        [1, 1, 1],
-        [0, 1, 0]
-      ],
-      [
-        [0, 1, 0],
-        [1, 1, 0],
-        [0, 1, 0]
-      ]
-    ],
-    Z: [
-      [
-        [1, 1, 0],
-        [0, 1, 1],
-        [0, 0, 0]
-      ],
-      [
-        [0, 0, 1],
-        [0, 1, 1],
-        [0, 1, 0]
-      ],
-      [
-        [0, 0, 0],
-        [1, 1, 0],
-        [0, 1, 1]
-      ],
-      [
-        [0, 1, 0],
-        [1, 1, 0],
-        [1, 0, 0]
-      ]
-    ]
-  }
-
-  const BRICKS = [
-    [tetrominoes.I, 'steelblue'],
-    [tetrominoes.J, 'orangered'],
-    [tetrominoes.L, 'purple'],
-    [tetrominoes.O, 'blue'],
-    [tetrominoes.S, 'green'],
-    [tetrominoes.T, 'gold'],
-    [tetrominoes.Z, 'red']
+      color: 'red'
+    }
   ]
-  
-  let rnd = Math.floor(Math.random() * BRICKS.length)
-  let tetromino = BRICKS[rnd][0]
-  let color = BRICKS[rnd][1]
+
+  let tetromino = tetrominoes[Math.floor(Math.random() * tetrominoes.length)]
   let activePattern = 0
-  let activeTetromino = tetromino[activePattern]
-  let length = activeTetromino.length
+  let activeTetromino = tetromino.pattern[activePattern]
+  let length = tetromino.pattern[0].length
   
   let brick = {
     tetromino,
-    color,
     activePattern,
     activeTetromino,
     length,
@@ -184,7 +192,7 @@ brickProto.draw = function() {
   for (let r = 0; r < this.length; r++) {
     for (let c = 0; c < this.length; c++) {
       if (this.activeTetromino[r][c])
-        this.board.drawSquare(this.x + r, this.y + c, this.color)
+        this.board.drawSquare(this.x + r, this.y + c, this.tetromino.color)
     }
   }
 }
@@ -231,13 +239,13 @@ brickProto.moveLeft = function() {
 brickProto.rotate = function() {
   this.undraw()
   this.activePattern += 1
-  this.activePattern %= this.tetromino.length
-  this.activeTetromino = this.tetromino[this.activePattern]
+  this.activePattern %= this.tetromino.pattern.length
+  this.activeTetromino = this.tetromino.pattern[this.activePattern]
   if (this.collision(0, 0, this.activeTetromino)) {
     let kickWall =
       this.y === -2 ||
       this.y === this.board.getColumns() - 2 &&
-      this.tetromino === I &&
+      this.tetromino.name === 'I' &&
       this.activePattern === 0
         ? 2
         : 1
@@ -256,7 +264,7 @@ brickProto.lock = function() {
           gameOver = true
           break
         } else {
-          this.board.setSquare(this.x + r, this.y + c, this.color)
+          this.board.setSquare(this.x + r, this.y + c, this.tetromino.color)
         }
       }
     }
