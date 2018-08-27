@@ -15,6 +15,24 @@ const gameParams = {
   emptySquare: 'white'
 }  
 
+const boards = []
+
+boards.push(getBoard(
+  gameParams.rowsMain,
+  gameParams.columnsMain,
+  gameParams.squareSize,
+  gameParams.emptySquare,
+  ctxMain
+))
+
+boards.push(getBoard(
+  gameParams.rowsNext,
+  gameParams.columnsNext,
+  gameParams.squareSize,
+  gameParams.emptySquare,
+  ctxNext
+))
+
 const gameState = {
   interval: 500,
   isOver: false,
@@ -23,27 +41,14 @@ const gameState = {
   score: null
 }  
 
-const boardMain = getBoard(
-  gameParams.rowsMain,
-  gameParams.columnsMain,
-  gameParams.squareSize,
-  gameParams.emptySquare,
-  ctxMain
-)
-
-const boardNext = getBoard(
-  gameParams.rowsNext,
-  gameParams.columnsNext,
-  gameParams.squareSize,
-  gameParams.emptySquare,
-  ctxNext
-)
-
-gameState.currentBrick = getRandomBrick(boardMain, 0, 3)
-gameState.nextBrick = getRandomBrick(boardNext, 0, 0)
-
+gameState.currentBrick = getRandomBrick(boards[0], 0, 3)
+gameState.nextBrick = getRandomBrick(boards[1], 0, 0)
 gameState.score = getScoreManager()
 highScoreElement.innerHTML = gameState.score.getHighScore()
+
+boards.forEach(x => x.draw())
+gameState.currentBrick.draw()
+gameState.nextBrick.draw()
 
 function control(evt) {
   switch (evt.keyCode) {
@@ -51,26 +56,21 @@ function control(evt) {
       gameState.currentBrick.moveLeft()
       dropStart = Date.now()
       break
-    case 38:
+    case 38:  
       gameState.currentBrick.rotate()
       dropStart = Date.now()
       break
-    case 39:
+    case 39:  
       gameState.currentBrick.moveRight()
       dropStart = Date.now()
       break
-    case 40:
+    case 40:  
       gameState.currentBrick.moveDown()
       dropStart = Date.now()
       break
-  }
-}
+  }    
+}  
 document.addEventListener('keydown', control)
-
-const boards = [boardMain, boardNext]
-boards.forEach(x => x.draw())
-gameState.currentBrick.draw()
-gameState.nextBrick.draw()
 
 let dropStart = Date.now()
 ;(function play() {
@@ -87,12 +87,12 @@ let dropStart = Date.now()
       gameState.nextBrick.undraw()
       gameState.currentBrick = gameState.nextBrick
       gameState.currentBrick.y = 3
-      gameState.currentBrick.board = boardMain
+      gameState.currentBrick.board = boards[0]
       gameState.currentBrick.draw()
-      gameState.nextBrick = getRandomBrick(boardNext, 0, 0)
+      gameState.nextBrick = getRandomBrick(boards[1], 0, 0)
       
-      while (boardMain.hasFullRow()) {
-        boardMain.deleteRow(boardMain.hasFullRow())
+      while (boards[0].hasFullRow()) {
+        boards[0].deleteRow(boards[0].hasFullRow())
 
         let levelChanged = gameState.score.increasePoints()
         if (levelChanged) {
