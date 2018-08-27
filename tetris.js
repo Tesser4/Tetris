@@ -19,7 +19,8 @@ const gameState = {
   interval: 500,
   isOver: false,
   currentBrick: null,
-  nextBrick: null
+  nextBrick: null,
+  score: null
 }  
 
 const boardMain = getBoard(
@@ -41,8 +42,8 @@ const boardNext = getBoard(
 gameState.currentBrick = getRandomBrick(boardMain, 0, 3)
 gameState.nextBrick = getRandomBrick(boardNext, 0, 0)
 
-const score = getScoreManager()
-highScoreElement.innerHTML = score.getHighScore()
+gameState.score = getScoreManager()
+highScoreElement.innerHTML = gameState.score.getHighScore()
 
 function control(evt) {
   switch (evt.keyCode) {
@@ -93,15 +94,15 @@ let dropStart = Date.now()
       while (boardMain.hasFullRow()) {
         boardMain.deleteRow(boardMain.hasFullRow())
 
-        let levelChanged = score.increasePoints()
+        let levelChanged = gameState.score.increasePoints()
         if (levelChanged) {
           gameState.interval = gameState.interval === 100
             ? gameState.interval
             : gameState.interval - 100
-          levelElement.innerHTML = score.getLevel()
+          levelElement.innerHTML = gameState.score.getLevel()
         }
 
-        scoreElement.innerHTML = score.getPoints()
+        scoreElement.innerHTML = gameState.score.getPoints()
       }
 
       boards.forEach(x => x.draw())
@@ -113,9 +114,9 @@ let dropStart = Date.now()
   if (gameState.isOver) {
     document.removeEventListener('keydown', control)
 
-    if (score.getHighScore() < score.getPoints()) {
-      score.setHighScore(score.getPoints())
-      highScoreElement.innerHTML = score.getHighScore()
+    if (gameState.score.getHighScore() < gameState.score.getPoints()) {
+      gameState.score.setHighScore(gameState.score.getPoints())
+      highScoreElement.innerHTML = gameState.score.getHighScore()
     }
 
     alert('Game Over')
