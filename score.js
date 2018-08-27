@@ -8,7 +8,7 @@ function getScoreManager() {
   function increasePoints() {
     points += SCORE_STEP
     let levelChanged = false
-    
+
     if (points >= nextLevel) {
       level += 1
       nextLevel += LEVEL_STEP

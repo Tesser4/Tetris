@@ -171,7 +171,7 @@ function getRandomBrick(board, x, y) {
   let activePattern = 0
   let activeTetromino = tetromino.pattern[activePattern]
   let length = tetromino.pattern[0].length
-  
+
   let brick = {
     tetromino,
     activePattern,
