@@ -12,11 +12,11 @@ function getBoard(rows, columns, squareSize, emptySquare, ctx) {
   function getRows() {
     return rows
   }
-  
+
   function getColumns() {
     return columns
   }
-  
+
   function isSquareEmpty(x, y) {
     return board[parseCoords(x, y)] === emptySquare
   }
@@ -24,11 +24,11 @@ function getBoard(rows, columns, squareSize, emptySquare, ctx) {
   function setSquare(x, y, color) {
     board[parseCoords(x, y)] = color
   }
-  
+
   function drawSquare(x, y, color) {
     ctx.fillStyle = color
     ctx.fillRect(y * squareSize, x * squareSize, squareSize, squareSize)
-  
+
     ctx.strokeStyle = 'black'
     ctx.strokeRect(y * squareSize, x * squareSize, squareSize, squareSize)
   }
@@ -36,7 +36,7 @@ function getBoard(rows, columns, squareSize, emptySquare, ctx) {
   function undrawSquare(x, y) {
     ctx.fillStyle = emptySquare
     ctx.fillRect(y * squareSize, x * squareSize, squareSize, squareSize)
-  
+
     ctx.strokeStyle = 'black'
     ctx.strokeRect(y * squareSize, x * squareSize, squareSize, squareSize)
   }
@@ -56,7 +56,7 @@ function getBoard(rows, columns, squareSize, emptySquare, ctx) {
       let row = board.slice(i * columns, i * columns + columns)
       if (row.every(x => x !== emptySquare)) fullRow = i
     }
-    
+
     return fullRow
   }
 

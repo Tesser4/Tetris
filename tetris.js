@@ -1,106 +1,68 @@
-const canvasMain = document.querySelector('#tetris')
-const ctxMain = canvasMain.getContext('2d')
-const canvasNext = document.querySelector('#nextbrick')
-const ctxNext = canvasNext.getContext('2d')
-const scoreElement = document.querySelector('#score')
-const levelElement = document.querySelector('#level')
-const highScoreElement = document.querySelector('#highScore')
+const tetrisAPI = (function() {
 
-const ROW_MAIN = 20
-const COL_MAIN = 10
-const ROW_NEXT = 4
-const COL_NEXT = 4
-const SQ = 30
-const EMPTY = 'white'
+  const canvasMain = document.querySelector('#tetris')
+  const ctxMain = canvasMain.getContext('2d')
+  const canvasNext = document.querySelector('#nextbrick')
+  const ctxNext = canvasNext.getContext('2d')
+  const scoreElement = document.querySelector('#score')
+  const levelElement = document.querySelector('#level')
+  const highScoreElement = document.querySelector('#highScore')
 
-const boardMain = getBoard(ROW_MAIN, COL_MAIN, SQ, EMPTY, ctxMain)
-const boardNext = getBoard(ROW_NEXT, COL_NEXT, SQ, EMPTY, ctxNext)
-let currentBrick = getRandomBrick(boardMain, 0, 3)
-let nextBrick = getRandomBrick(boardNext, 0, 0)
-
-const score = getScoreManager()
-highScoreElement.innerHTML = score.getHighScore()
-
-let gameInterval = 500
-let gameOver = false
-
-function control(evt) {
-  switch (evt.keyCode) {
-    case 37:
-      currentBrick.moveLeft()
-      dropStart = Date.now()
-      break
-    case 38:
-      currentBrick.rotate()
-      dropStart = Date.now()
-      break
-    case 39:
-      currentBrick.moveRight()
-      dropStart = Date.now()
-      break
-    case 40:
-      currentBrick.moveDown()
-      dropStart = Date.now()
-      break
-  }
-}
-document.addEventListener('keydown', control)
-
-const boards = [boardMain, boardNext]
-boards.forEach(x => x.draw())
-currentBrick.draw()
-nextBrick.draw()
-
-let dropStart = Date.now()
-;(function play() {
-  let now = Date.now()
-  let delta = now - dropStart
-
-  if (delta > gameInterval) {
-    dropStart = Date.now()
-    let locked = currentBrick.moveDown()
-
-    if (locked) {
-      gameOver = currentBrick.lock()
-
-      nextBrick.undraw()
-      currentBrick = nextBrick
-      currentBrick.y = 3
-      currentBrick.board = boardMain
-      currentBrick.draw()
-      nextBrick = getRandomBrick(boardNext, 0, 0)
-      
-      while (boardMain.hasFullRow()) {
-        boardMain.deleteRow(boardMain.hasFullRow())
-
-        let levelChanged = score.increasePoints()
-        if (levelChanged) {
-          gameInterval = gameInterval === 100
-            ? gameInterval
-            : gameInterval - 100
-          levelElement.innerHTML = score.getLevel()
-        }
-
-        scoreElement.innerHTML = score.getPoints()
-      }
-
-      boards.forEach(x => x.draw())
-      currentBrick.draw()
-      nextBrick.draw()
-    }
+  const html = {
+    scoreElement,
+    levelElement,
+    highScoreElement
   }
 
-  if (gameOver) {
-    document.removeEventListener('keydown', control)
+  const params = {
+    rowsMain: 20,
+    columnsMain: 10,
+    rowsNext: 4,
+    columnsNext: 4,
+    squareSize: 30,
+    emptySquare: 'white'
+  }
 
-    if (score.getHighScore() < score.getPoints()) {
-      score.setHighScore(score.getPoints())
-      highScoreElement.innerHTML = score.getHighScore()
-    }
+  const boards = []
 
-    alert('Game Over')
-  } else {
-    requestAnimationFrame(play)
+  boards.push(getBoard(
+    params.rowsMain,
+    params.columnsMain,
+    params.squareSize,
+    params.emptySquare,
+    ctxMain
+  ))
+
+  boards.push(getBoard(
+    params.rowsNext,
+    params.columnsNext,
+    params.squareSize,
+    params.emptySquare,
+    ctxNext
+  ))
+
+  const state = {
+    interval: 500,
+    isOver: false,
+    currentBrick: null,
+    nextBrick: null,
+    score: null
+  }
+
+  state.currentBrick = getRandomBrick(boards[0], 0, 3)
+  state.nextBrick = getRandomBrick(boards[1], 0, 0)
+  state.score = getScoreManager()
+  highScoreElement.innerHTML = state.score.getHighScore()
+
+  boards.forEach(x => x.draw())
+  state.currentBrick.draw()
+  state.nextBrick.draw()
+
+  return {
+    html,
+    params,
+    boards,
+    state
   }
 
 })()
