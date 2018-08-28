@@ -34,11 +34,16 @@ function getScoreManager() {
     return Number(localStorage.getItem('highScore')) || 0
   }
 
+  function resetHighScore() {
+    localStorage.setItem('highScore', JSON.stringify(0))
+  }
+
   return {
     increasePoints,
     getPoints,
     getLevel,
     setHighScore,
-    getHighScore
+    getHighScore,
+    resetHighScore
   }
 }

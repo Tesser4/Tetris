@@ -1,4 +1,4 @@
-function tetrisControl(evt) {
+function keyboardControl(evt) {
   switch (evt.keyCode) {
     case 37:
       tetrisAPI.state.currentBrick.moveLeft()
@@ -18,11 +18,35 @@ function tetrisControl(evt) {
       break
   }
 }
-document.addEventListener('keydown', tetrisControl)
+document.addEventListener('keydown', keyboardControl)
+
+function buttonControl(evt) {
+  if (evt.target.nodeName !== 'BUTTON') return
+
+  switch (evt.target.id) {
+    case 'pauseButton':
+      tetrisAPI.buttons.pauseButton.disabled = !tetrisAPI.buttons.pauseButton.disabled
+      break
+    case 'newGameButton':
+      tetrisAPI.buttons.pauseButton.disabled = false
+      tetrisAPI.buttons.newGameButton.disabled = true
+      tetrisAPI.buttons.resetHSButton.disabled = true
+      play()
+      break
+    case 'resetHSButton':
+      tetrisAPI.state.score.resetHighScore()
+      tetrisAPI.html.highScoreElement.innerHTML = tetrisAPI.state.score.getHighScore()
+      break
+  }
+}
+document.addEventListener('click', buttonControl)
 
 let dropStart = Date.now()
 
-;(function play() {
+function play() {
+  tetrisAPI.state.currentBrick.draw()
+  tetrisAPI.state.nextBrick.draw()
+
   let now = Date.now()
   let delta = now - dropStart
 
@@ -37,7 +61,6 @@ let dropStart = Date.now()
       tetrisAPI.state.currentBrick = tetrisAPI.state.nextBrick
       tetrisAPI.state.currentBrick.y = 3
       tetrisAPI.state.currentBrick.board = tetrisAPI.boards[0]
-      tetrisAPI.state.currentBrick.draw()
       tetrisAPI.state.nextBrick = getRandomBrick(tetrisAPI.boards[1], 0, 0)
 
       while (tetrisAPI.boards[0].hasFullRow()) {
@@ -55,13 +78,19 @@ let dropStart = Date.now()
       }
 
       tetrisAPI.boards.forEach(x => x.draw())
-      tetrisAPI.state.currentBrick.draw()
+      // tetrisAPI.state.currentBrick.draw()
       tetrisAPI.state.nextBrick.draw()
     }
   }
 
   if (tetrisAPI.state.isOver) {
-    document.removeEventListener('keydown', tetrisControl)
+    tetrisAPI.state.currentBrick.draw()
+
+    tetrisAPI.buttons.pauseButton.disabled = true
+    tetrisAPI.buttons.newGameButton.disabled = false
+    tetrisAPI.buttons.resetHSButton.disabled = false
+
+    document.removeEventListener('keydown', keyboardControl)
 
     if (tetrisAPI.state.score.getHighScore() < tetrisAPI.state.score.getPoints()) {
       tetrisAPI.state.score.setHighScore(tetrisAPI.state.score.getPoints())
@@ -72,5 +101,4 @@ let dropStart = Date.now()
   } else {
     requestAnimationFrame(play)
   }
-
-})()
+}

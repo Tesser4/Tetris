@@ -7,6 +7,10 @@ const tetrisAPI = (function() {
   const scoreElement = document.querySelector('#score')
   const levelElement = document.querySelector('#level')
   const highScoreElement = document.querySelector('#highScore')
+  const pauseButton = document.querySelector('#pauseButton')
+  const newGameButton = document.querySelector('#newGameButton')
+  const resetHSButton = document.querySelector('#resetHSButton')
+  pauseButton.disabled = true
 
   const html = {
     scoreElement,
@@ -54,15 +58,18 @@ const tetrisAPI = (function() {
   state.score = getScoreManager()
   highScoreElement.innerHTML = state.score.getHighScore()
 
-  boards.forEach(x => x.draw())
-  state.currentBrick.draw()
-  state.nextBrick.draw()
+  const buttons = {
+    pauseButton,
+    newGameButton,
+    resetHSButton
+  }
 
+  boards.forEach(x => x.draw())
   return {
     html,
     params,
     boards,
-    state
+    state,
+    buttons
   }
-
 })()
