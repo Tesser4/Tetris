@@ -7,16 +7,20 @@
         display: inline-block;
       }
       div {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         font-family: monospace;
+      }
+      .bigButton {
+        width: 300px
+      }
+      .smallButton {
+        width: 145px
       }
     </style>
   </head>
 
   <body>
-    <canvas id="tetris" width="300" height="600"></canvas>
-    <canvas id="nextbrick" width="120" height="120"></canvas>
     <div>
       Score: <div id="score" class="inline">0</div>
     </div>
@@ -25,6 +29,15 @@
     </div>
     <div>
       High Score: <div id="highScore" class="inline"></div>
+    </div>
+    <canvas id="tetris" width="300" height="600"></canvas>
+    <canvas id="nextbrick" width="120" height="120"></canvas>
+    <div>
+      <button id="pauseButton" class="bigButton">Pause</button>
+    </div>
+    <div>
+      <button id="newGameButton" class="smallButton">New Game</button>
+      <button id="resetHSButton" class="smallButton">Reset HighScore</button>
     </div>
 
 
