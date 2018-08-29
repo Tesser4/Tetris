@@ -1,4 +1,4 @@
-const tetrisAPI = (function() {
+let tetris = (function getTetrisAPI() {
 
   const canvasMain = document.querySelector('#tetris')
   const ctxMain = canvasMain.getContext('2d')
