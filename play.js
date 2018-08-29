@@ -25,7 +25,7 @@ function buttonControl(evt) {
 
   switch (evt.target.id) {
     case 'pauseButton':
-      tetrisAPI.buttons.pauseButton.disabled = !tetrisAPI.buttons.pauseButton.disabled
+      tetrisAPI.buttons.togglePause()
       break
     case 'newGameButton':
       tetrisAPI.buttons.pauseButton.disabled = false
@@ -50,7 +50,7 @@ function play() {
   let now = Date.now()
   let delta = now - dropStart
 
-  if (delta > tetrisAPI.state.interval) {
+  if (delta > tetrisAPI.state.interval && !tetrisAPI.state.isPaused) {
     dropStart = Date.now()
     let locked = tetrisAPI.state.currentBrick.moveDown()
 

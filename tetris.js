@@ -48,6 +48,7 @@ const tetrisAPI = (function() {
   const state = {
     interval: 500,
     isOver: false,
+    isPaused: false,
     currentBrick: null,
     nextBrick: null,
     score: null
@@ -58,10 +59,16 @@ const tetrisAPI = (function() {
   state.score = getScoreManager()
   highScoreElement.innerHTML = state.score.getHighScore()
 
+  function togglePause() {
+    state.isPaused = !state.isPaused
+    pauseButton.innerText = state.isPaused ? 'Resume' : 'Pause'
+  }
+
   const buttons = {
     pauseButton,
     newGameButton,
-    resetHSButton
+    resetHSButton,
+    togglePause
   }
 
   boards.forEach(x => x.draw())
