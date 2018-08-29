@@ -33,6 +33,9 @@ function buttonControl(evt) {
   switch (evt.target.id) {
     case 'pauseButton':
       tetris.buttons.togglePause()
+      tetris.state.isPaused
+        ? enableKeyboard(false)
+        : enableKeyboard(true)
       break
     case 'newGameButton':
       tetris = getTetrisAPI()
