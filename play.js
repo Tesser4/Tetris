@@ -1,3 +1,5 @@
+let tetris = getTetrisAPI()
+
 function keyboardControl(evt) {
   switch (evt.keyCode) {
     case 37:
@@ -18,7 +20,12 @@ function keyboardControl(evt) {
       break
   }
 }
-document.addEventListener('keydown', keyboardControl)
+
+function enableKeyboard(enable) {
+  enable
+    ? document.addEventListener('keydown', keyboardControl)
+    : document.removeEventListener('keydown', keyboardControl)
+}
 
 function buttonControl(evt) {
   if (evt.target.nodeName !== 'BUTTON') return
@@ -28,14 +35,16 @@ function buttonControl(evt) {
       tetris.buttons.togglePause()
       break
     case 'newGameButton':
+      tetris = getTetrisAPI()
       tetris.buttons.pauseButton.disabled = false
       tetris.buttons.newGameButton.disabled = true
       tetris.buttons.resetHSButton.disabled = true
+      enableKeyboard(true)
       play()
       break
     case 'resetHSButton':
       tetris.state.score.resetHighScore()
-      tetris.html.highScoreElement.innerHTML = tetris.state.score.getHighScore()
+      tetris.html.highScoreElement.innerText = tetris.state.score.getHighScore()
       break
   }
 }
@@ -71,10 +80,10 @@ function play() {
           tetris.state.interval = tetris.state.interval === 100
             ? tetris.state.interval
             : tetris.state.interval - 100
-          tetris.html.levelElement.innerHTML = tetris.state.score.getLevel()
+          tetris.html.levelElement.innerText = tetris.state.score.getLevel()
         }
 
-        tetris.html.scoreElement.innerHTML = tetris.state.score.getPoints()
+        tetris.html.scoreElement.innerText = tetris.state.score.getPoints()
       }
 
       tetris.boards.forEach(x => x.draw())
@@ -90,11 +99,11 @@ function play() {
     tetris.buttons.newGameButton.disabled = false
     tetris.buttons.resetHSButton.disabled = false
 
-    document.removeEventListener('keydown', keyboardControl)
+    enableKeyboard(false)
 
     if (tetris.state.score.getHighScore() < tetris.state.score.getPoints()) {
       tetris.state.score.setHighScore(tetris.state.score.getPoints())
-      tetris.html.highScoreElement.innerHTML = tetris.state.score.getHighScore()
+      tetris.html.highScoreElement.innerText = tetris.state.score.getHighScore()
     }
 
     alert('Game Over')

@@ -1,4 +1,4 @@
-let tetris = (function getTetrisAPI() {
+function getTetrisAPI() {
 
   const canvasMain = document.querySelector('#tetris')
   const ctxMain = canvasMain.getContext('2d')
@@ -57,7 +57,9 @@ let tetris = (function getTetrisAPI() {
   state.currentBrick = getRandomBrick(boards[0], 0, 3)
   state.nextBrick = getRandomBrick(boards[1], 0, 0)
   state.score = getScoreManager()
-  highScoreElement.innerHTML = state.score.getHighScore()
+  scoreElement.innerText = state.score.getPoints()
+  levelElement.innerText = state.score.getLevel()
+  highScoreElement.innerText = state.score.getHighScore()
 
   function togglePause() {
     state.isPaused = !state.isPaused
@@ -79,4 +81,4 @@ let tetris = (function getTetrisAPI() {
     state,
     buttons
   }
-})()
+}
