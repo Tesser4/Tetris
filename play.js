@@ -27,15 +27,20 @@ function enableKeyboard(enable) {
     : document.removeEventListener('keydown', keyboardControl)
 }
 
+let intervals = []
 function buttonControl(evt) {
   if (evt.target.nodeName !== 'BUTTON') return
 
   switch (evt.target.id) {
     case 'pauseButton':
       tetris.buttons.togglePause()
-      tetris.state.isPaused
-        ? enableKeyboard(false)
-        : enableKeyboard(true)
+      if (tetris.state.isPaused) {
+        enableKeyboard(false)
+        intervals = tetris.boards.map(b => b.hide())
+      } else {
+        enableKeyboard(true)
+        tetris.boards.forEach((b, i) => b.draw(intervals[i]))
+      }
       break
     case 'newGameButton':
       tetris = getTetrisAPI()
@@ -56,8 +61,10 @@ document.addEventListener('click', buttonControl)
 let dropStart = Date.now()
 
 function play() {
-  tetris.state.currentBrick.draw()
-  tetris.state.nextBrick.draw()
+  if (!tetris.state.isPaused) {
+    tetris.state.currentBrick.draw()
+    tetris.state.nextBrick.draw()
+  }
 
   let now = Date.now()
   let delta = now - dropStart

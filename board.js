@@ -41,12 +41,38 @@ function getBoard(rows, columns, squareSize, emptySquare, ctx) {
     ctx.strokeRect(y * squareSize, x * squareSize, squareSize, squareSize)
   }
 
-  function draw() {
+  function draw(intervalID) {
+    if (intervalID) clearInterval(intervalID)
+
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
         drawSquare(r, c, board[parseCoords(r, c)])
       }
     }
+  }
+
+  function hide() {
+    const colors = [
+      'steelblue',
+      'orangered',
+      'purple',
+      'blue',
+      'green',
+      'gold',
+      'red'
+    ]
+
+    function fillSquares() {
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns; c++) {
+          drawSquare(r, c, colors[Math.floor(Math.random() * colors.length)])
+        }
+      }
+    }
+    fillSquares()
+    let intervalID = setInterval(fillSquares, 3000)
+
+    return intervalID
   }
 
   function hasFullRow() {
@@ -80,6 +106,7 @@ function getBoard(rows, columns, squareSize, emptySquare, ctx) {
     drawSquare,
     undrawSquare,
     draw,
+    hide,
     hasFullRow,
     deleteRow,
     logme
